@@ -1,6 +1,8 @@
 import React from 'react'
 import Link from 'next/link'
+import Head from "./../components/head";
 import 'isomorphic-unfetch'
+
 
 export default class HomePage extends React.Component {
     static async getInitialProps() {
@@ -13,6 +15,7 @@ export default class HomePage extends React.Component {
     render() {
         return (
             <div>
+                <Head/>
                 Hello World.<br />
                 <Link href='/about'><a>About</a></Link>
                 <h2>Country list</h2>
