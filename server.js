@@ -3,7 +3,9 @@ const next = require('next');
 const Koa = require('koa');
 const Router = require('koa-router');
 const koaBody = require('koa-body');
+const cookie = require('koa-cookie');
 const database = require('./server/helpers/database');
+const KeyGrip = require("keygrip");
 
 const signinRouter = require('./server/routers/signin');
 const signupRouter = require('./server/routers/signup');
@@ -14,8 +16,12 @@ const signupRouter = require('./server/routers/signup');
 const server = new Koa();
 const router = new Router();
 
+server.keys = ['im a newer secret', 'i like turtle'];
+server.keys = new KeyGrip(['im a newer secret', 'i like turtle'], 'sha256');
 
+//server.use(cookie());
 server.use(koaBody());
+
 server.use(signinRouter.routes());
 server.use(signupRouter.routes());
 //

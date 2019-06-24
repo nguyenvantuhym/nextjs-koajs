@@ -10,6 +10,7 @@ module.exports = async (ctx,next)=>
                     _id:ctx.state.user._id
                                     });
 
+    ctx.cookies.set('token',token,{ signed: true });
     ctx.body ={
         token:token,
         success: true, 

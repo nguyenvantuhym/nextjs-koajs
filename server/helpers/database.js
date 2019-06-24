@@ -77,6 +77,7 @@ class Database {
                 success:false,
                 message:"tai khoan da ton tai"
             };// dinh nghia object {success :bool, data: object, message :string}
+            return;
 
         }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import Head from './head'
+
 import Link from 'next/link'
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
 
