@@ -7,8 +7,10 @@ const cookie = require('koa-cookie');
 const database = require('./server/helpers/database');
 const KeyGrip = require("keygrip");
 
-const signinRouter = require('./server/routers/signin');
-const signupRouter = require('./server/routers/signup');
+const userRouter = require('./server/routers/user');
+
+const authRouter = require('./server/routers/auth.router');
+const getalluserRouter = require('./server/routers/getalluser');
 
 
 
@@ -22,8 +24,10 @@ server.keys = new KeyGrip(['im a newer secret', 'i like turtle'], 'sha256');
 //server.use(cookie());
 server.use(koaBody());
 
-server.use(signinRouter.routes());
-server.use(signupRouter.routes());
+server.use(userRouter.routes());
+
+server.use(authRouter.routes());
+server.use(getalluserRouter.routes());
 //
 const nextApp = next({ dev: true });
 const handler = nextApp.getRequestHandler();
@@ -38,27 +42,6 @@ const handler = nextApp.getRequestHandler();
             ctx.respond = false;
         });
 
-       /* router.post('/signup',async ctx=>{
-            let dataSignup = ctx.request.body;
-            //console.log(dataSignup);
-            let result = await database.newAccount(dataSignup);
-            ctx.body = result;
-            
-        });*/
-        /*
-        router.post('/signin',async ctx=>{
-            let dataSignup = ctx.request.body;
-            //console.log(dataSignup);
-            let result = await database.login(dataSignup);
-            
-            ctx.body = result;
-            
-        });
-        
-        router.post('/postdata', async ctx=>{
-            ctx.body = `Request Body: ${JSON.stringify(ctx.request.body)}`;
-        });
-        */
         router.get('*', async ctx => {
             await handler(ctx.req, ctx.res);
             ctx.respond = false;

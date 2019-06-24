@@ -25,44 +25,7 @@ class Database {
         .catch((err)=>console.log('Database connection error!!' + err));
 
     }
-    async login(ctx,next)
-    {
-        let dataSignin = ctx.request.body;
-        let {username} = dataSignin;
-        let accountExist = await User.findOne({username});
-        console.log(accountExist);
-        if(accountExist)
-        {
-            let compa = await bcrypt.compare(dataSignin.password, accountExist.password);
-            if(compa === true) 
-            {
-               // await next();
-                ctx.body = {
-                    success:true,
-                    message:"dang nhap thanh cong",
-                    data:{
-                        roles:"boss"
-                    }
-                };
-            }
-            else{
-                ctx.body = {
-                    success:false,
-                    message:"dang nhap khong thanh cong"
-                };
-            }
-        }
-        else
-        {
-            ctx.body = {
-                success:false,
-                message:"dang nhap khong thanh cong"
-            };
-        }
-
-
-        
-    }
+    
 
 
     async newAccount(ctx,next)
@@ -99,6 +62,15 @@ class Database {
             
         }
         
+    }
+
+    async getalluser(ctx,next)
+    {
+        if(ctx.state.rules ==='boss')
+        {
+            console.log(ctx.state.username);
+            ctx.state.data = await User.find({author:ctx.state.username});
+        }
     }
 
 }

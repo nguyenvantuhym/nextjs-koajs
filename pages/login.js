@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Router from 'next/router'
 import axios from 'axios'
 import Css from './../components/css';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
@@ -10,7 +11,8 @@ class LoginForm extends React.Component {
   super(props);
    this.state={
      username:'',
-     password:''
+     password:'',
+     message:''
    }
    this.changeUsername = this.changeUsername.bind(this)
    this.changePassWord = this.changePassWord.bind(this);
@@ -56,7 +58,19 @@ class LoginForm extends React.Component {
         url:'/signin',
         data:this.state
       }).then((res)=>{
-        console.log(res.data);
+        if(res.data.success === true)
+        {
+          Router.push("/");
+        }
+        else
+        {
+          this.setState({
+            username:'',
+            password:'',
+            message:"Mật khẩu và tài khoản không chính xác!!"
+          })
+        }
+        
       });
     }
   }
@@ -69,6 +83,9 @@ class LoginForm extends React.Component {
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
             <Image src='https://react.semantic-ui.com/logo.png' /> Log-in to your account
+          </Header>
+          <Header>
+            <h5>{this.state.message}</h5>
           </Header>
           <Form size='large'>
             <Segment stacked>

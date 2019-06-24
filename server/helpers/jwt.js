@@ -1,5 +1,5 @@
 const jsonwebtoken = require('jsonwebtoken');
-module.exports = class jwt{
+ class jwt{
 
     constructor()
     {
@@ -14,7 +14,8 @@ module.exports = class jwt{
 
     async Decode  (data)
     {
-        return  jsonwebtoken.verify(data, 'taolatu');
+        return  await jsonwebtoken.verify(data, 'taolatu');
     }
 
 }
+module.exports = new jwt();

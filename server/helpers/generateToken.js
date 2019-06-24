@@ -1,6 +1,6 @@
-const Jwt = require('./jwt');
+const jwt = require('./jwt');
 
-const jwt = new Jwt();
+
 const mysecret ='taolatu';
 module.exports = async (ctx,next)=>
 {
@@ -11,7 +11,8 @@ module.exports = async (ctx,next)=>
                                     });
 
     ctx.cookies.set('token',token,{ signed: true });
-    ctx.body ={
+
+    ctx.body = {
         token:token,
         success: true, 
         data:ctx.state.user

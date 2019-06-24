@@ -1,17 +1,43 @@
 import React from 'react'
-import Link from 'next/link'
+import Router from 'next/router'
 import Css from './../components/css'
-import 'isomorphic-unfetch'
+import axios from 'axios';
 import { Icon, Table,Container,Grid } from 'semantic-ui-react'
 
 
 export default class index extends React.Component {
-    static async getInitialProps() {
-        let res = await fetch('https://cloudreports.net/sample/api/countries.json')
-        let contriesObj = await res.json()
-        console.log(contriesObj)
-        return {countries: contriesObj}
+    constructor(props)
+    {
+        super(props);
+        this.state = {
+            listUser:[]};
     }
+
+    static async getInitialProps() {
+
+      
+        const ls = ['van tu','duy manh'];
+        return {listuser:ls};
+    
+    }
+
+    componentDidMount = async()=>
+    {
+        let res = await axios({
+            method:'get',
+            url:'/api/getalluser'
+        });
+        console.log(res.data);
+        if(res.data.success ===true)
+            this.setState({...this.state,listUser:res.data.data});
+        else
+        {
+            Router.push("/login");
+        }
+
+
+    }
+    
 
     render() {
         return (
@@ -19,18 +45,14 @@ export default class index extends React.Component {
                 <Css/>
                 <h2>Country list</h2>
                 <Container fluid>
-                    {this.props.countries.map((country, i) => {
-                        return (
-                            <Table celled striped key={'country-' + i}>
-                                <Table.Header>
-                                <Table.Row>
-                                    <Table.HeaderCell colSpan='3'>{country.name}</Table.HeaderCell>
-                                </Table.Row>
-                                </Table.Header>
-                            </Table>
-                            
-                        )
-                    })}
+                    {
+                        this.state.listUser.map((user,i)=>{
+                            return(
+                                <li  key={'name-' + i} >{user.username}</li>
+                            )
+                           
+                        })
+                    }
                 </Container>
             </div>
         )
