@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Head from "next/head";
-import Nav from './nav';
+
 export default () => (
   <div>
     <Head>
@@ -11,7 +11,7 @@ export default () => (
       />
     </Head>
 
-    <Nav/>
+   
 
     
   </div>

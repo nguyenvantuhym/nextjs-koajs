@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const User = require('./models/user');
+const User = require('./../models/user');
 
 
 const saltRounds = 10;
@@ -25,30 +25,39 @@ class Database {
         .catch((err)=>console.log('Database connection error!!' + err));
 
     }
-    async login(dataAccount)
+    async login(ctx,next)
     {
-        let {username} = dataAccount;
+        let dataSignin = ctx.request.body;
+        let {username} = dataSignin;
         let accountExist = await User.findOne({username});
         console.log(accountExist);
         if(accountExist)
         {
-            let compa = await bcrypt.compare(dataAccount.password, accountExist.password);
+            let compa = await bcrypt.compare(dataSignin.password, accountExist.password);
             if(compa === true) 
             {
-                return ({
+               // await next();
+                ctx.body = {
                     success:true,
                     message:"dang nhap thanh cong",
                     data:{
                         roles:"boss"
                     }
-                })
+                };
             }
             else{
-                return ({
+                ctx.body = {
                     success:false,
                     message:"dang nhap khong thanh cong"
-                })
+                };
             }
+        }
+        else
+        {
+            ctx.body = {
+                success:false,
+                message:"dang nhap khong thanh cong"
+            };
         }
 
 
@@ -56,36 +65,37 @@ class Database {
     }
 
 
-    async newAccount(dataNewAccount)
+    async newAccount(ctx,next)
     {
-
-        let {username} = dataNewAccount;
+        let dataSignup = ctx.request.body;
+        let {username} = dataSignup;
         let accountExist = await User.findOne({username});
         if(accountExist)
         {
             console.log('error username exist');
-            return({
+            ctx.body ={
                 success:false,
                 message:"tai khoan da ton tai"
-            });// dinh nghia object {success :bool, data: object, message :string}
+            };// dinh nghia object {success :bool, data: object, message :string}
 
         }
 
-        let result={};
+        
 
-        let hash = await bcrypt.hash(dataNewAccount.password, saltRounds);
+        let hash = await bcrypt.hash(dataSignup.password, saltRounds);
 
         if(hash) {
-            let newUser = User({...dataNewAccount, password:hash});
+            let newUser = User({...dataSignup, password:hash});
                 
             newUser.save();
-            result = { 
-            success:true,
-            data:newUser._id
-            };
-            //return result;
-            console.log(result);
-            return result;
+            ctx.state.user =newUser;
+            await next();
+            /*ctx.body = { 
+                success:true,
+                data:newUser._id
+            };*/
+            
+            
         }
         
     }

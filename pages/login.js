@@ -1,8 +1,7 @@
 import React from 'react'
-
-import Head from './../components/head'
 import Link from 'next/link'
 import axios from 'axios'
+import Css from './../components/css';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
 
 class LoginForm extends React.Component {
@@ -65,7 +64,7 @@ class LoginForm extends React.Component {
   render(){
   return(
     <div>
-      <Head/>
+     <Css/>
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>

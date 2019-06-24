@@ -1,10 +1,11 @@
 import React from 'react'
 import Link from 'next/link'
-import Head from "./../components/head";
+import Css from './../components/css'
 import 'isomorphic-unfetch'
+import { Icon, Table,Container,Grid } from 'semantic-ui-react'
 
 
-export default class HomePage extends React.Component {
+export default class index extends React.Component {
     static async getInitialProps() {
         let res = await fetch('https://cloudreports.net/sample/api/countries.json')
         let contriesObj = await res.json()
@@ -15,17 +16,22 @@ export default class HomePage extends React.Component {
     render() {
         return (
             <div>
-                <Head/>
-                Hello World.<br />
-                <Link href='/about'><a>About</a></Link>
+                <Css/>
                 <h2>Country list</h2>
-                <ul>
+                <Container fluid>
                     {this.props.countries.map((country, i) => {
                         return (
-                            <li key={'country-' + i}>{country.name}</li>
+                            <Table celled striped key={'country-' + i}>
+                                <Table.Header>
+                                <Table.Row>
+                                    <Table.HeaderCell colSpan='3'>{country.name}</Table.HeaderCell>
+                                </Table.Row>
+                                </Table.Header>
+                            </Table>
+                            
                         )
                     })}
-                </ul>
+                </Container>
             </div>
         )
     }

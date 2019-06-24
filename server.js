@@ -3,7 +3,10 @@ const next = require('next');
 const Koa = require('koa');
 const Router = require('koa-router');
 const koaBody = require('koa-body');
-const database = require('./server/database');
+const database = require('./server/helpers/database');
+
+const signinRouter = require('./server/routers/signin');
+const signupRouter = require('./server/routers/signup');
 
 
 
@@ -12,12 +15,14 @@ const server = new Koa();
 const router = new Router();
 
 
-
 server.use(koaBody());
-
-// Initialize NextJs instance and expose request handler
+server.use(signinRouter.routes());
+server.use(signupRouter.routes());
+//
 const nextApp = next({ dev: true });
 const handler = nextApp.getRequestHandler();
+// Initialize NextJs instance and expose request handler
+
 
 (async () => {
     try {
@@ -27,18 +32,19 @@ const handler = nextApp.getRequestHandler();
             ctx.respond = false;
         });
 
-        router.post('/signup',async ctx=>{
+       /* router.post('/signup',async ctx=>{
             let dataSignup = ctx.request.body;
             //console.log(dataSignup);
             let result = await database.newAccount(dataSignup);
             ctx.body = result;
             
-        });
-
+        });*/
+        /*
         router.post('/signin',async ctx=>{
             let dataSignup = ctx.request.body;
             //console.log(dataSignup);
             let result = await database.login(dataSignup);
+            
             ctx.body = result;
             
         });
@@ -46,7 +52,7 @@ const handler = nextApp.getRequestHandler();
         router.post('/postdata', async ctx=>{
             ctx.body = `Request Body: ${JSON.stringify(ctx.request.body)}`;
         });
-
+        */
         router.get('*', async ctx => {
             await handler(ctx.req, ctx.res);
             ctx.respond = false;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Link from 'next/link'
+import Css from './css'
 import { Input, Menu } from 'semantic-ui-react'
 
 export default class MenuExampleSecondary extends Component {
@@ -11,6 +12,8 @@ export default class MenuExampleSecondary extends Component {
     const { activeItem } = this.state
 
     return (
+      <div>
+        <Css/>
       <Menu secondary>
         <Link href="/">
         <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick} />
@@ -36,6 +39,7 @@ export default class MenuExampleSecondary extends Component {
           />
         </Menu.Menu>
       </Menu>
+      </div>
     )
   }
 }
